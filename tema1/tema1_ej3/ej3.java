@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 public class ej3 {
     public static void main(String[] args) {
-        Scanner read = new Scanner(System.in);
         String[] prod;
         List<Product> lista = new ArrayList<Product>();
         Path fichero = Path.of("tema1/tema1_ej3/Ej03_LeerFicheros.csv");
@@ -48,6 +47,7 @@ public class ej3 {
             System.out.println();*/
 
             System.out.println("Promedio de existencias en el almacen");
+
 
         } catch (FileNotFoundException e) {
             System.out.println("Fichero no encontrado");
