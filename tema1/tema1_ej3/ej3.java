@@ -22,11 +22,11 @@ public class ej3 {
                 product.setUnitPrice(Double.parseDouble(prod[5]));
                 product.setUnitsInStock((Integer.parseInt(prod[6])));
                 lista.add(product);
-                //System.out.println(product.toString());
+                System.out.println(product.toString());
             }
             System.out.println();
 
-            /*System.out.println("Nombres de los productos");
+            System.out.println("Nombres de los productos");
             lista.forEach(p-> System.out.println(p.getName()));
             System.out.println();
 
@@ -44,10 +44,10 @@ public class ej3 {
 
             System.out.println("Producto con el precio unitario más alto");
             System.out.println(lista.stream().max(Comparator.comparingDouble(Product::getUnitPrice)).get().getName());
-            System.out.println();*/
+            System.out.println();
 
             System.out.println("Promedio de existencias en el almacen");
-
+            System.out.println(lista.stream().mapToDouble(p -> p.getUnitsInStock()).average().orElse(0));
 
         } catch (FileNotFoundException e) {
             System.out.println("Fichero no encontrado");
