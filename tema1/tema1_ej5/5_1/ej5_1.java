@@ -21,16 +21,5 @@ public class ej5_1 {
         } catch (Exception ex) {
             System.out.println("Se ha encontrado un error");
         }
-
-        try (FileInputStream fis = new FileInputStream(fichero.toFile()); ObjectInputStream ois = new ObjectInputStream(fis)) {
-            Persona pers1 = (Persona) ois.readObject();
-            Persona pers2 = (Persona) ois.readObject();
-            Persona pers3 = (Persona) ois.readObject();
-            pers1.escribir();
-            pers2.escribir();
-            pers3.escribir();
-        } catch (Exception ex) {
-            System.out.println("Se ha encontrado un error");
-        }
     }
 }
