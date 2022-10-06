@@ -18,7 +18,7 @@ public class ej4_4 {
             System.out.println("Introduce el id del producto");
             id = read.nextInt();
             System.out.println("Escribe el nombre del producto");
-            name = read.nextLine();
+            name = read.next();
             System.out.println("Escribe el código del proveedor");
             supplier = read.nextInt();
             System.out.println("Escribe el código de la categoria");
