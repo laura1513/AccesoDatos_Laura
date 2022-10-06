@@ -12,12 +12,13 @@ public class ej5_1 {
             Date fecha2 = new Date(2003-1-15);
             Date fecha3 = new Date(2000-11-3);
 
-            Persona pers1 = new Persona("Roberto", "roberto1980@gmail.com", fecha1);
-            Persona pers2 = new Persona("Juliana", "juls_lopez@gmail.com", fecha2);
-            Persona pers3 = new Persona("Toni", "garciatoni@gmail.com", fecha3);
-            oos.writeObject(pers1);
-            oos.writeObject(pers2);
-            oos.writeObject(pers3);
+            Persona pers = new Persona("Roberto", "roberto1980@gmail.com", fecha1);
+            oos.writeObject(pers);
+            pers = new Persona("Juliana", "juls_lopez@gmail.com", fecha2);
+            oos.writeObject(pers);
+            pers = new Persona("Toni", "garciatoni@gmail.com", fecha3);
+            oos.writeObject(pers);
+
         } catch (Exception ex) {
             System.out.println("Se ha encontrado un error");
         }
