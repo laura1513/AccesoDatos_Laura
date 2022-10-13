@@ -13,10 +13,17 @@ public class ej6_1 {
         int category;
         double unitPrice;
         int unitsInStock;
+        boolean encontrado;
+        String palabraClave;
+        String lineanew = "asd";
+        String lineaold = "asd";
+        RandomAccessFile raf;
+        String linea;
         List<Product> lista = new ArrayList<>();
+        String ruta = "tema1/tema1_ej3/Ej03_LeerFicheros.csv";
         try {
             prod = new Product();
-            fichero = new FileWriter("tema1/tema1_ej3/Ej03_LeerFicheros.csv");
+            fichero = new FileWriter(ruta, true);
             System.out.println("Introduce el id del producto");
             id = read.nextInt();
             System.out.println("Escribe el nombre del producto");
@@ -35,20 +42,11 @@ public class ej6_1 {
             prod.setCategory(category);
             prod.setUnitPrice(unitPrice);
             prod.setUnitsInStock(unitsInStock);
-            lista.add(prod);
-            int[] longitud = new int[lista.size()];
-            for (int i = 0; i<lista.size(); i++) {
-                longitud[i] = lista.size();
-            }
-            boolean encontrado = false;
-            String palabraClave = Integer.toString(prod.getId());
-            String lineanew = "asd";
-            String lineaold = "asd";
-            int delStrSiza = 0;
-
-            RandomAccessFile raf = new RandomAccessFile(String.valueOf(fichero), "r");
-            String linea = raf.readLine();
-
+            fichero.close();
+            palabraClave = Integer.toString(prod.getId());
+            encontrado = false;
+            raf = new RandomAccessFile(ruta, "r");
+            linea = raf.readLine();
             while (linea != null) {
                 if (linea.contains(palabraClave)) {
                     encontrado = true;
@@ -61,11 +59,11 @@ public class ej6_1 {
             if (!encontrado) {
                 fichero.write(id+","+name+","+supplier+","+category+",null"+unitPrice+","+unitsInStock+",null,null,null");
             } else {
-                raf = new RandomAccessFile(String.valueOf(fichero), "rw");
+                raf = new RandomAccessFile(ruta, "rw");
                 linea = raf.readLine();
                 while (linea != null) {
                     if (linea.contains(lineaold)) {
-                        raf.seek(0);
+                        raf.seek(lista.size());
                         raf.writeBytes(lineanew);
                     }
                      linea = raf.readLine();

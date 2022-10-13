@@ -35,7 +35,6 @@ public class ej4_4 {
             prod.setCategory(category);
             prod.setUnitPrice(unitPrice);
             prod.setUnitsInStock(unitsInStock);
-
             fichero.write(id+","+name+","+supplier+","+category+",null"+unitPrice+","+unitsInStock+",null,null,null");
             fichero.close();
         } catch (Exception ex) {
