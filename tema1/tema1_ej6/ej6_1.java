@@ -42,6 +42,7 @@ public class ej6_1 {
             prod.setCategory(category);
             prod.setUnitPrice(unitPrice);
             prod.setUnitsInStock(unitsInStock);
+            lista.add(prod);
             fichero.close();
             palabraClave = Integer.toString(prod.getId());
             encontrado = false;
@@ -52,6 +53,8 @@ public class ej6_1 {
                     encontrado = true;
                     lineanew = id+","+name+","+supplier+","+category+",null"+unitPrice+","+unitsInStock+",null,null,null";
                     lineaold = linea;
+                } else {
+                    System.out.println("Estas aqui");
                 }
                 linea = raf.readLine();
             }
