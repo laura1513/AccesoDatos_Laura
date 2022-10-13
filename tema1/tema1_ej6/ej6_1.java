@@ -14,7 +14,6 @@ public class ej6_1 {
         double unitPrice;
         int unitsInStock;
         boolean encontrado;
-        String palabraClave;
         String lineanew = "asd";
         String lineaold = "asd";
         RandomAccessFile raf;
@@ -44,17 +43,14 @@ public class ej6_1 {
             prod.setUnitsInStock(unitsInStock);
             lista.add(prod);
             fichero.close();
-            palabraClave = Integer.toString(prod.getId());
             encontrado = false;
-            raf = new RandomAccessFile(ruta, "r");
+            raf = new RandomAccessFile(ruta, "rw");
             linea = raf.readLine();
             while (linea != null) {
-                if (linea.contains(palabraClave)) {
+                if (prod.getId() == id) {
                     encontrado = true;
                     lineanew = id+","+name+","+supplier+","+category+",null"+unitPrice+","+unitsInStock+",null,null,null";
                     lineaold = linea;
-                } else {
-                    System.out.println("Estas aqui");
                 }
                 linea = raf.readLine();
             }
@@ -62,14 +58,14 @@ public class ej6_1 {
             if (!encontrado) {
                 fichero.write(id+","+name+","+supplier+","+category+",null"+unitPrice+","+unitsInStock+",null,null,null");
             } else {
-                raf = new RandomAccessFile(ruta, "rw");
-                linea = raf.readLine();
+                //raf = new RandomAccessFile(ruta, "rw");
+                //linea = raf.readLine();
                 while (linea != null) {
                     if (linea.contains(lineaold)) {
                         raf.seek(lista.size());
                         raf.writeBytes(lineanew);
                     }
-                     linea = raf.readLine();
+                    linea = raf.readLine();
                 }
             }
             raf.close();
