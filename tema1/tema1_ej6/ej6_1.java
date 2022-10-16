@@ -54,7 +54,6 @@ public class ej6_1 {
                 }
                 linea = raf.readLine();
             }
-            raf.close();
             if (!encontrado) {
                 fichero.write(id+","+name+","+supplier+","+category+",null"+unitPrice+","+unitsInStock+",null,null,null");
             } else {
