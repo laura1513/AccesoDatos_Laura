@@ -123,13 +123,9 @@ public class raceResults {
         this.fastestLap = fastestLap;
     }
 
+    @Override
     public String toString() {
-        return "Resultados--> Track: " + track + ", Position: " + position + ", No: " + no + ", Dirver: " + driver + ", Starting Grid: " + startingGrid + ", Time: " + time + ", Extra Points: " + extraPoints + ", Fastest Lap: ";
+        return "Position: " + position + ", Track: " + track + ", No: " + no + ", Driver: " + driver + ", Starting Grid: " + startingGrid + ", Time: " + time + ", Points: " + points + ", Extra Points: " + extraPoints + ", Fastest Lap: " +fastestLap;
     }
 
-    public ArrayList puntos(ArrayList pts) {
-
-
-        return pts;
-    }
 }

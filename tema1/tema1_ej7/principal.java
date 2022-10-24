@@ -1,10 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class principal {
     private static final String COMMA_DELIMITER = ",";
@@ -33,20 +30,16 @@ public class principal {
                 r.setExtraPoints(piloto[9]);
                 r.setFastestLap(piloto[10]);
                 race2.add(r);
-                System.out.println(r.toString());
             }
-            //race2.stream().max(Comparator.comparingInt(raceResults::getPoints)).get().getDriver();
+            /*for (raceResults ra : race2) {
+                System.out.println(ra.toString());
+            }*/
+            double acum = 0;
+            race2.stream().filter(p-> Objects.equals(p.getDriver(), "Max Verstappen")).forEach(System.out::println);
+            System.out.println(race2.stream().filter(p -> Objects.equals(p.getDriver(), "Max Verstappen")).mapToDouble(p -> p.getPoints()).sum());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /*try (FileReader fr = new FileReader("tema1/tema1_ej7/formula1_2021season_sprintQualifyingResults.csv"); BufferedReader br = new BufferedReader(fr)){
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] pil = line.split(COMMA_DELIMITER);
-                sprint.add(Arrays.asList(pil));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
     }
 }
