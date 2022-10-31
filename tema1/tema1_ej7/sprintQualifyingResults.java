@@ -6,10 +6,10 @@ public class sprintQualifyingResults {
     private String team;
     private int startingGrid;
     private int laps;
-    private double time;
+    private String time;
     private double points;
 
-    public sprintQualifyingResults(String track, String position, int no, String driver, String team, int startingGrid, int laps, double time, double points) {
+    public sprintQualifyingResults(String track, String position, int no, String driver, String team, int startingGrid, int laps, String time, double points) {
         this.track = track;
         this.position = position;
         this.no = no;
@@ -19,6 +19,10 @@ public class sprintQualifyingResults {
         this.laps = laps;
         this.time = time;
         this.points = points;
+    }
+
+    public sprintQualifyingResults() {
+
     }
 
     public String getTrack() {
@@ -77,11 +81,11 @@ public class sprintQualifyingResults {
         this.laps = laps;
     }
 
-    public double getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(double time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

@@ -20,7 +20,11 @@ public class principal {
                 String[] piloto = linea.split(COMMA_DELIMITER);
                 raceResults r = new raceResults();
                 r.setTrack(piloto[0]);
-                r.setPosition(piloto[1]);
+                if (Objects.equals(piloto[1], "NC")) {
+                    r.setPosition("0");
+                } else {
+                    r.setPosition(piloto[1]);
+                }
                 r.setNo(Integer.parseInt(piloto[2]));
                 r.setDriver(piloto[3]);
                 r.setTeam(piloto[4]);
@@ -41,23 +45,79 @@ public class principal {
                 s.setPosition(rapida[1]);
                 s.setNo(Integer.parseInt(rapida[2]));
                 s.setDriver(rapida[3]);
-
+                s.setTeam(rapida[4]);
+                s.setStartingGrid(Integer.parseInt(rapida[5]));
+                s.setLaps(Integer.parseInt(rapida[6]));
+                s.setTime(rapida[7]);
+                s.setPoints(Double.parseDouble(rapida[8]));
+                sprint.add(s);
             }
 
-            HashMap<String, Double> piloto = new HashMap<>();
-            double acum = 0;
+            //¿Qué piloto consiguió más puntos en el campeonato y, por lo tanto, fue campeón del mundo?
+            HashMap<String, Double> clasPilotos = new HashMap<>();
+            System.out.println("---------------Clasificación de pilotos---------------");
             for (raceResults ra : race) {
                 //piloto.put("Max Verstappen", p.getPoints());
-                if (!piloto.containsKey(ra.getDriver())) {
-                    piloto.put(ra.getDriver(), ra.getPoints());
+                if (!clasPilotos.containsKey(ra.getDriver())) {
+                    clasPilotos.put(ra.getDriver(), ra.getPoints());
                 } else {
-                    piloto.put(ra.getDriver(), piloto.get(ra.getDriver())+ra.getPoints());
+                    clasPilotos.put(ra.getDriver(), clasPilotos.get(ra.getDriver())+ra.getPoints());
                 }
             }
-            piloto.entrySet().stream().filter(p -> p.getValue() >= 0).sorted((p1, p2) -> Double.compare(p2.getValue(), p1.getValue())).forEach(System.out::println);
+            for (sprintQualifyingResults sp: sprint) {
+                if (clasPilotos.containsKey(sp.getDriver())) {
+                    clasPilotos.put(sp.getDriver(), clasPilotos.get(sp.getDriver())+sp.getPoints());
+                }
+            }
+            clasPilotos.entrySet().stream().filter(p -> p.getValue() >= 0).sorted((p1, p2) -> Double.compare(p2.getValue(), p1.getValue())).forEach(System.out::println);
             System.out.println();
             System.out.print("Campeón del mundo: ");
-            System.out.println(Collections.max(piloto.entrySet(), Map.Entry.comparingByValue()).getKey());
+            System.out.println(Collections.max(clasPilotos.entrySet(), Map.Entry.comparingByValue()).getKey());
+
+
+            System.out.println();
+
+
+            //¿Qué escudería se alzó con la victoria en el mundial de constructores?
+            System.out.println("---------------Clasificación de escuderías---------------");
+            HashMap<String, Double> clasEscuderia = new HashMap<>();
+            for (raceResults escRa : race) {
+                if (!clasEscuderia.containsKey(escRa.getTeam())) {
+                    clasEscuderia.put(escRa.getTeam(), escRa.getPoints());
+                } else {
+                    clasEscuderia.put(escRa.getTeam(), clasEscuderia.get(escRa.getTeam())+escRa.getPoints());
+                }
+            }
+            for (sprintQualifyingResults escSp: sprint) {
+                if (clasEscuderia.containsKey(escSp.getDriver())) {
+                    clasEscuderia.put(escSp.getTeam(), clasEscuderia.get(escSp.getTeam())+escSp.getPoints());
+                }
+            }
+            clasEscuderia.entrySet().stream().filter(p-> p.getValue()>=0).sorted((p1, p2) -> Double.compare(p2.getValue(), p1.getValue())).forEach(System.out::println);
+            System.out.println();
+            System.out.print("Escudería ganadora: ");
+            System.out.println(Collections.max(clasEscuderia.entrySet(), Map.Entry.comparingByValue()).getKey());
+
+
+            System.out.println();
+
+            //¿Qué piloto consiguió más victorias? ¿Y qué equipo?
+            System.out.println("---------------Más victorias (piloto y escudería)---------------");
+            HashMap<String, Integer> masVictoriasPiloto = new HashMap<>();
+            HashMap<String, Integer> masVictoriasEscuderia = new HashMap<>();
+            for (raceResults vicRa : race) {
+                if (!masVictoriasPiloto.containsKey(vicRa.getDriver())) {
+                        masVictoriasPiloto.put(vicRa.getDriver(), 0);
+                } else {
+                    if (masVictoriasPiloto.get(vicRa.getPosition()) == 1) {
+                        masVictoriasPiloto.put(vicRa.getDriver(), Integer.parseInt(masVictoriasPiloto.get(vicRa.getDriver())+vicRa.getPosition()));
+                    }
+                }
+            }
+            masVictoriasPiloto.entrySet().stream().filter(p->p.getValue()>=0).sorted((p1, p2) -> Integer.compare(p2.getValue(), p1.getValue())).forEach(System.out::println);
+            System.out.println();
+            System.out.println("El piloto con más victorias es: ");
+            System.out.println(Collections.max(masVictoriasPiloto.entrySet(), Map.Entry.comparingByValue()).getKey());
         } catch (IOException e) {
             e.printStackTrace();
         }
