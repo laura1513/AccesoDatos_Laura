@@ -1,22 +1,23 @@
+import com.sun.jdi.Value;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.Key;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class principal {
     private static final String COMMA_DELIMITER = ",";
 
     public static void main(String[] args) {
-        List<List<String>> race = new ArrayList<>();
-        List<List<String>> sprint = new ArrayList<>();
-        List<raceResults> race2 = new ArrayList<raceResults>();
-        List<sprintQualifyingResults> sprint2 = new ArrayList<>();
-        try (FileReader fr = new FileReader("tema1/tema1_ej7/formula1_2021season_raceResults.csv"); BufferedReader br = new BufferedReader(fr)){
+        List<raceResults> race = new ArrayList<raceResults>();
+        List<sprintQualifyingResults> sprint = new ArrayList<>();
+        try (FileReader fr = new FileReader("tema1/tema1_ej7/formula1_2021season_raceResults.csv"); BufferedReader br = new BufferedReader(fr); FileReader f = new FileReader("tema1/tema1_ej7/formula1_2021season_sprintQualifyingResults.csv"); BufferedReader b = new BufferedReader(f)){
             String linea;
             br.readLine();
             while ((linea = br.readLine()) != null) {
                 String[] piloto = linea.split(COMMA_DELIMITER);
-                race.add(Arrays.asList(piloto));
                 raceResults r = new raceResults();
                 r.setTrack(piloto[0]);
                 r.setPosition(piloto[1]);
@@ -29,15 +30,34 @@ public class principal {
                 r.setPoints(Double.parseDouble(piloto[8]));
                 r.setExtraPoints(piloto[9]);
                 r.setFastestLap(piloto[10]);
-                race2.add(r);
+                race.add(r);
             }
-            /*for (raceResults ra : race2) {
-                System.out.println(ra.toString());
-            }*/
-            double acum = 0;
-            race2.stream().filter(p-> Objects.equals(p.getDriver(), "Max Verstappen")).forEach(System.out::println);
-            System.out.println(race2.stream().filter(p -> Objects.equals(p.getDriver(), "Max Verstappen")).mapToDouble(p -> p.getPoints()).sum());
+            String line;
+            b.readLine();
+            while ((line = b.readLine()) != null) {
+                String[] rapida = line.split(COMMA_DELIMITER);
+                sprintQualifyingResults s = new sprintQualifyingResults();
+                s.setTrack(rapida[0]);
+                s.setPosition(rapida[1]);
+                s.setNo(Integer.parseInt(rapida[2]));
+                s.setDriver(rapida[3]);
 
+            }
+
+            HashMap<String, Double> piloto = new HashMap<>();
+            double acum = 0;
+            for (raceResults ra : race) {
+                //piloto.put("Max Verstappen", p.getPoints());
+                if (!piloto.containsKey(ra.getDriver())) {
+                    piloto.put(ra.getDriver(), ra.getPoints());
+                } else {
+                    piloto.put(ra.getDriver(), piloto.get(ra.getDriver())+ra.getPoints());
+                }
+            }
+            piloto.entrySet().stream().filter(p -> p.getValue() >= 0).sorted((p1, p2) -> Double.compare(p2.getValue(), p1.getValue())).forEach(System.out::println);
+            System.out.println();
+            System.out.print("Campeón del mundo: ");
+            System.out.println(Collections.max(piloto.entrySet(), Map.Entry.comparingByValue()).getKey());
         } catch (IOException e) {
             e.printStackTrace();
         }
