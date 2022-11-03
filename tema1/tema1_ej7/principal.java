@@ -1,24 +1,20 @@
-import com.sun.jdi.Value;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.security.Key;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class principal {
     private static final String COMMA_DELIMITER = ",";
 
     public static void main(String[] args) {
-        List<raceResults> race = new ArrayList<raceResults>();
-        List<sprintQualifyingResults> sprint = new ArrayList<>();
+        List<race> race = new ArrayList<race>();
+        List<sprint> sprint = new ArrayList<>();
         try (FileReader fr = new FileReader("tema1/tema1_ej7/formula1_2021season_raceResults.csv"); BufferedReader br = new BufferedReader(fr); FileReader f = new FileReader("tema1/tema1_ej7/formula1_2021season_sprintQualifyingResults.csv"); BufferedReader b = new BufferedReader(f)){
             String linea;
             br.readLine();
             while ((linea = br.readLine()) != null) {
                 String[] piloto = linea.split(COMMA_DELIMITER);
-                raceResults r = new raceResults();
+                race r = new race();
                 r.setTrack(piloto[0]);
                 if (Objects.equals(piloto[1], "NC")) {
                     r.setPosition("0");
@@ -42,7 +38,7 @@ public class principal {
             b.readLine();
             while ((line = b.readLine()) != null) {
                 String[] rapida = line.split(COMMA_DELIMITER);
-                sprintQualifyingResults s = new sprintQualifyingResults();
+                sprint s = new sprint();
                 s.setTrack(rapida[0]);
                 s.setPosition(rapida[1]);
                 s.setNo(Integer.parseInt(rapida[2]));
@@ -58,7 +54,7 @@ public class principal {
             //¿Qué piloto consiguió más puntos en el campeonato y, por lo tanto, fue campeón del mundo?
             HashMap<String, Double> clasPilotos = new HashMap<>();
             System.out.println("---------------Clasificación de pilotos---------------");
-            for (raceResults ra : race) {
+            for (race ra : race) {
                 //piloto.put("Max Verstappen", p.getPoints());
                 if (!clasPilotos.containsKey(ra.getDriver())) {
                     clasPilotos.put(ra.getDriver(), ra.getPoints());
@@ -66,7 +62,7 @@ public class principal {
                     clasPilotos.put(ra.getDriver(), clasPilotos.get(ra.getDriver())+ra.getPoints());
                 }
             }
-            for (sprintQualifyingResults sp: sprint) {
+            for (sprint sp: sprint) {
                 if (clasPilotos.containsKey(sp.getDriver())) {
                     clasPilotos.put(sp.getDriver(), clasPilotos.get(sp.getDriver())+sp.getPoints());
                 }
@@ -77,14 +73,14 @@ public class principal {
             //¿Qué escudería se alzó con la victoria en el mundial de constructores?
             System.out.println("---------------Clasificación de escuderías---------------");
             HashMap<String, Double> clasEscuderia = new HashMap<>();
-            for (raceResults escRa : race) {
+            for (race escRa : race) {
                 if (!clasEscuderia.containsKey(escRa.getTeam())) {
                     clasEscuderia.put(escRa.getTeam(), escRa.getPoints());
                 } else {
                     clasEscuderia.put(escRa.getTeam(), clasEscuderia.get(escRa.getTeam())+escRa.getPoints());
                 }
             }
-            for (sprintQualifyingResults escSp: sprint) {
+            for (sprint escSp: sprint) {
                 if (clasEscuderia.containsKey(escSp.getDriver())) {
                     clasEscuderia.put(escSp.getTeam(), clasEscuderia.get(escSp.getTeam())+escSp.getPoints());
                 }
@@ -96,7 +92,7 @@ public class principal {
             System.out.println("---------------Más victorias (piloto)---------------");
             HashMap<String, Integer> masVictoriasPiloto = new HashMap<>();
             HashMap<String, Integer> masVictoriasEscuderia = new HashMap<>();
-            for (raceResults vicPi : race) {
+            for (race vicPi : race) {
                 if(Integer.parseInt(vicPi.getPosition()) == 1) {
                     if (!masVictoriasPiloto.containsKey(vicPi.getDriver())) {
                         masVictoriasPiloto.put(vicPi.getDriver(), 1);
@@ -110,7 +106,7 @@ public class principal {
             System.out.println();
 
             System.out.println("---------------Más victorias (escudería)---------------");
-            for (raceResults vicEsc : race) {
+            for (race vicEsc : race) {
                 if(Integer.parseInt(vicEsc.getPosition()) == 1) {
                     if (!masVictoriasEscuderia.containsKey(vicEsc.getTeam())) {
                         masVictoriasEscuderia.put(vicEsc.getTeam(), 1);
@@ -127,7 +123,7 @@ public class principal {
             System.out.println("---------------Más podium (piloto)---------------");
             HashMap<String, Integer> masPodioPiloto = new HashMap<>();
             HashMap<String, Integer> masPodioEscuderia = new HashMap<>();
-            for (raceResults podPi : race) {
+            for (race podPi : race) {
                 if(Integer.parseInt(podPi.getPosition()) == 1 || Integer.parseInt(podPi.getPosition()) == 2 || Integer.parseInt(podPi.getPosition()) == 3) {
                     if (!masPodioPiloto.containsKey(podPi.getDriver())) {
                         masPodioPiloto.put(podPi.getDriver(), 1);
@@ -141,7 +137,7 @@ public class principal {
             System.out.println();
 
             System.out.println("---------------Más podium (escudería)---------------");
-            for (raceResults podEsc : race) {
+            for (race podEsc : race) {
                 if(Integer.parseInt(podEsc.getPosition()) == 1 || Integer.parseInt(podEsc.getPosition()) == 2 || Integer.parseInt(podEsc.getPosition()) == 3) {
                     if (!masPodioEscuderia.containsKey(podEsc.getTeam())) {
                         masPodioEscuderia.put(podEsc.getTeam(), 1);
@@ -159,7 +155,7 @@ public class principal {
             System.out.println("---------------Más poles (piloto)---------------");
             HashMap<String, Integer> masPolesPiloto = new HashMap<>();
             HashMap<String, Integer> masPolesEscuderia = new HashMap<>();
-            for (raceResults polPi : race) {
+            for (race polPi : race) {
                 if(polPi.getStartingGrid() == 1) {
                     if (!masPolesPiloto.containsKey(polPi.getDriver())) {
                         masPolesPiloto.put(polPi.getDriver(), 1);
@@ -173,7 +169,7 @@ public class principal {
             System.out.println();
 
             System.out.println("---------------Más poles (escudería)---------------");
-            for (raceResults polEsc : race) {
+            for (race polEsc : race) {
                 if(polEsc.getStartingGrid() == 1) {
                     if (!masPolesEscuderia.containsKey(polEsc.getTeam())) {
                         masPolesEscuderia.put(polEsc.getTeam(), 1);
@@ -190,7 +186,7 @@ public class principal {
             System.out.println("---------------Más abandonos (piloto)---------------");
             HashMap<String, Integer> masAbandonosPiloto = new HashMap<>();
             HashMap<String, Integer> masAbandonosEscuderia = new HashMap<>();
-            for (raceResults abPi : race) {
+            for (race abPi : race) {
                 if(Integer.parseInt(abPi.getPosition()) == 0) {
                     if (!masAbandonosPiloto.containsKey(abPi.getDriver())) {
                         masAbandonosPiloto.put(abPi.getDriver(), 1);
@@ -204,7 +200,7 @@ public class principal {
             System.out.println();
 
             System.out.println("---------------Más abandonos (escudería)---------------");
-            for (raceResults abEsc : race) {
+            for (race abEsc : race) {
                 if(Integer.parseInt(abEsc.getPosition()) == 0) {
                     if (!masAbandonosEscuderia.containsKey(abEsc.getTeam())) {
                         masAbandonosEscuderia.put(abEsc.getTeam(), 1);
