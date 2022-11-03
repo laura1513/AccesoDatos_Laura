@@ -22,7 +22,9 @@ public class principal {
                 r.setTrack(piloto[0]);
                 if (Objects.equals(piloto[1], "NC")) {
                     r.setPosition("0");
-                } else {
+                } else if (Objects.equals(piloto[1], "DQ")){
+                    r.setPosition("0");
+                }else {
                     r.setPosition(piloto[1]);
                 }
                 r.setNo(Integer.parseInt(piloto[2]));
@@ -42,7 +44,13 @@ public class principal {
                 String[] rapida = line.split(COMMA_DELIMITER);
                 sprintQualifyingResults s = new sprintQualifyingResults();
                 s.setTrack(rapida[0]);
-                s.setPosition(rapida[1]);
+                if (Objects.equals(rapida[1], "NC")) {
+                    s.setPosition("0");
+                } else if (Objects.equals(rapida[1], "DQ")){
+                    s.setPosition("0");
+                }else {
+                    s.setPosition(rapida[1]);
+                }
                 s.setNo(Integer.parseInt(rapida[2]));
                 s.setDriver(rapida[3]);
                 s.setTeam(rapida[4]);
@@ -102,22 +110,39 @@ public class principal {
             System.out.println();
 
             //¿Qué piloto consiguió más victorias? ¿Y qué equipo?
-            System.out.println("---------------Más victorias (piloto y escudería)---------------");
+            System.out.println("---------------Más victorias (piloto)---------------");
             HashMap<String, Integer> masVictoriasPiloto = new HashMap<>();
             HashMap<String, Integer> masVictoriasEscuderia = new HashMap<>();
             for (raceResults vicRa : race) {
-                if (!masVictoriasPiloto.containsKey(vicRa.getDriver())) {
-                        masVictoriasPiloto.put(vicRa.getDriver(), 0);
-                } else {
-                    if (masVictoriasPiloto.get(vicRa.getPosition()) == 1) {
-                        masVictoriasPiloto.put(vicRa.getDriver(), Integer.parseInt(masVictoriasPiloto.get(vicRa.getDriver())+vicRa.getPosition()));
+                if(Integer.parseInt(vicRa.getPosition()) == 1) {
+                    if (!masVictoriasPiloto.containsKey(vicRa.getDriver())) {
+                        masVictoriasPiloto.put(vicRa.getDriver(), 1);
+                    } else {
+                            masVictoriasPiloto.put(vicRa.getDriver(), masVictoriasPiloto.get(vicRa.getDriver())+1);
                     }
                 }
+
             }
             masVictoriasPiloto.entrySet().stream().filter(p->p.getValue()>=0).sorted((p1, p2) -> Integer.compare(p2.getValue(), p1.getValue())).forEach(System.out::println);
             System.out.println();
-            System.out.println("El piloto con más victorias es: ");
+            System.out.print("El piloto con más victorias es: ");
             System.out.println(Collections.max(masVictoriasPiloto.entrySet(), Map.Entry.comparingByValue()).getKey());
+
+            System.out.println("---------------Más victorias (escudería)---------------");
+            for (raceResults vicSp : race) {
+                if(Integer.parseInt(vicSp.getPosition()) == 1) {
+                    if (!masVictoriasEscuderia.containsKey(vicSp.getTeam())) {
+                        masVictoriasEscuderia.put(vicSp.getTeam(), 1);
+                    } else {
+                        masVictoriasPiloto.put(vicSp.getTeam(), masVictoriasPiloto.get(vicSp.getTeam())+1);
+                    }
+                }
+
+            }
+            masVictoriasEscuderia.entrySet().stream().filter(p->p.getValue()>=0).sorted((p1, p2) -> Integer.compare(p2.getValue(), p1.getValue())).forEach(System.out::println);
+            System.out.println();
+            System.out.print("La escuderia con más victorias es: ");
+            System.out.println(Collections.max(masVictoriasEscuderia.entrySet(), Map.Entry.comparingByValue()).getKey());
         } catch (IOException e) {
             e.printStackTrace();
         }
