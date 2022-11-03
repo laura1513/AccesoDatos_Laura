@@ -208,7 +208,6 @@ public class principal {
                         masAbandonosEscuderia.put(abEsc.getTeam(), masAbandonosEscuderia.get(abEsc.getTeam())+1);
                     }
                 }
-
             }
             masAbandonosEscuderia.entrySet().stream().filter(p->p.getValue()>=0).sorted((p1, p2) -> Integer.compare(p2.getValue(), p1.getValue())).forEach(System.out::println);
             System.out.println();
