@@ -1,5 +1,11 @@
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+
 import java.util.Date;
 
+@XmlRootElement (name = "calendar")
+@XmlType (propOrder = {"Round", "Country", "City", "Circuit Name", "Gp Name", "Race Date", "First gp", "Number of laps", "Circuit length", "Race distance", "Lap record", "Record owner", "Record year", "Turns", "DRS zones"})
 public class calendar {
     private int round;
     private String country;
@@ -17,6 +23,7 @@ public class calendar {
     private int turns;
     private int drs;
 
+    @XmlElement(name = "Round")
     public int getRound() {
         return round;
     }
@@ -25,6 +32,7 @@ public class calendar {
         this.round = round;
     }
 
+    @XmlElement(name = "Country")
     public String getCountry() {
         return country;
     }
@@ -33,6 +41,7 @@ public class calendar {
         this.country = country;
     }
 
+    @XmlElement(name = "City")
     public String getCity() {
         return city;
     }
@@ -41,6 +50,7 @@ public class calendar {
         this.city = city;
     }
 
+    @XmlElement(name = "Circuit Name")
     public String getCircuitName() {
         return circuitName;
     }
@@ -49,6 +59,7 @@ public class calendar {
         this.circuitName = circuitName;
     }
 
+    @XmlElement(name = "Gp Name")
     public String getGpName() {
         return gpName;
     }
@@ -57,6 +68,7 @@ public class calendar {
         this.gpName = gpName;
     }
 
+    @XmlElement(name = "Race Date")
     public Date getRaceDate() {
         return raceDate;
     }
@@ -65,6 +77,7 @@ public class calendar {
         this.raceDate = raceDate;
     }
 
+    @XmlElement(name = "First gp")
     public String getFirstGP() {
         return firstGP;
     }
@@ -73,6 +86,7 @@ public class calendar {
         this.firstGP = firstGP;
     }
 
+    @XmlElement(name = "Number of laps")
     public int getLaps() {
         return laps;
     }
@@ -81,6 +95,7 @@ public class calendar {
         this.laps = laps;
     }
 
+    @XmlElement(name = "Circuit length")
     public double getCircuitLength() {
         return circuitLength;
     }
@@ -89,6 +104,7 @@ public class calendar {
         this.circuitLength = circuitLength;
     }
 
+    @XmlElement(name = "Race distance")
     public double getRaceDistance() {
         return raceDistance;
     }
@@ -97,6 +113,7 @@ public class calendar {
         this.raceDistance = raceDistance;
     }
 
+    @XmlElement(name = "Lap record")
     public String getLapRecord() {
         return lapRecord;
     }
@@ -105,6 +122,7 @@ public class calendar {
         this.lapRecord = lapRecord;
     }
 
+    @XmlElement(name = "Record ownew")
     public String getRecordOwner() {
         return recordOwner;
     }
@@ -113,6 +131,7 @@ public class calendar {
             this.recordOwner = recordOwner;
     }
 
+    @XmlElement(name = "Record year")
     public String getRecordYear() {
         return recordYear;
     }
@@ -121,6 +140,7 @@ public class calendar {
         this.recordYear = recordYear;
     }
 
+    @XmlElement(name = "Turns")
     public int getTurns() {
         return turns;
     }
@@ -129,6 +149,7 @@ public class calendar {
         this.turns = turns;
     }
 
+    @XmlElement(name = "DRS zones")
     public int getDrs() {
         return drs;
     }
