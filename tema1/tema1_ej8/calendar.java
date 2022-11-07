@@ -1,29 +1,33 @@
+import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
 import java.util.Date;
 
-@XmlRootElement (name = "calendar")
-@XmlType (propOrder = {"round", "country", "city", "circuitName", "gpName", "raceDate", "firstGP", "laps", "circuitLength", "raceDistance", "lapRecord", "recordOwner", "recordYear", "turns", "drs"})
+@XmlRootElement (name = "race")
+@XmlType (propOrder = {"round", "country", "city", "circuitname", "gpname", "racedate", "firstgp", "numberoflaps", "circuitlength", "racedistance", "laprecord", "recordowner", "recordyear", "turns", "drszones"})
 public class calendar {
     private int round;
     private String country;
     private String city;
-    private String circuitName;
-    private String gpName;
-    private Date raceDate;
-    private String firstGP;
-    private int laps;
-    private double circuitLength;
-    private double raceDistance;
-    private String lapRecord;
-    private String recordOwner;
-    private String recordYear;
+    private String circuitname;
+    private String gpname;
+    private Date racedate;
+    private String firstgp;
+    private int numberoflaps;
+    private double circuitlength;
+    private double racedistance;
+    private String laprecord;
+    private String recordowner;
+    private String recordyear;
     private int turns;
-    private int drs;
+    private int drszones;
 
-    @XmlElement(name = "round")
+    public calendar() {
+
+    }
+    @XmlAttribute(name = "round")
     public int getRound() {
         return round;
     }
@@ -50,94 +54,94 @@ public class calendar {
         this.city = city;
     }
 
-    @XmlElement(name = "circuitName")
-    public String getCircuitName() {
-        return circuitName;
+    @XmlElement(name = "circuitname")
+    public String getCircuitname() {
+        return circuitname;
     }
 
-    public void setCircuitName(String circuitName) {
-        this.circuitName = circuitName;
+    public void setCircuitname(String circuitname) {
+        this.circuitname = circuitname;
     }
 
-    @XmlElement(name = "gpName")
-    public String getGpName() {
-        return gpName;
+    @XmlElement(name = "gpname")
+    public String getGpname() {
+        return gpname;
     }
 
-    public void setGpName(String gpName) {
-        this.gpName = gpName;
+    public void setGpname(String gpname) {
+        this.gpname = gpname;
     }
 
-    @XmlElement(name = "raceDate")
-    public Date getRaceDate() {
-        return raceDate;
+    @XmlElement(name = "racedate")
+    public Date getRacedate() {
+        return racedate;
     }
 
-    public void setRaceDate(Date raceDate) {
-        this.raceDate = raceDate;
+    public void setRacedate(Date racedate) {
+        this.racedate = racedate;
     }
 
-    @XmlElement(name = "firstGP")
-    public String getFirstGP() {
-        return firstGP;
+    @XmlElement(name = "firstgp")
+    public String getFirstgp() {
+        return firstgp;
     }
 
-    public void setFirstGP(String firstGP) {
-        this.firstGP = firstGP;
+    public void setFirstgp(String firstgp) {
+        this.firstgp = firstgp;
     }
 
-    @XmlElement(name = "laps")
-    public int getLaps() {
-        return laps;
+    @XmlElement(name = "numberoflaps")
+    public int getNumberoflaps() {
+        return numberoflaps;
     }
 
-    public void setLaps(int laps) {
-        this.laps = laps;
+    public void setNumberoflaps(int numberoflaps) {
+        this.numberoflaps = numberoflaps;
     }
 
-    @XmlElement(name = "circuitLength")
-    public double getCircuitLength() {
-        return circuitLength;
+    @XmlElement(name = "circuitlength")
+    public double getCircuitlength() {
+        return circuitlength;
     }
 
-    public void setCircuitLength(double circuitLength) {
-        this.circuitLength = circuitLength;
+    public void setCircuitlength(double circuitlength) {
+        this.circuitlength = circuitlength;
     }
 
-    @XmlElement(name = "raceDistance")
-    public double getRaceDistance() {
-        return raceDistance;
+    @XmlElement(name = "racedistance")
+    public double getRacedistance() {
+        return racedistance;
     }
 
-    public void setRaceDistance(double raceDistance) {
-        this.raceDistance = raceDistance;
+    public void setRacedistance(double racedistance) {
+        this.racedistance = racedistance;
     }
 
-    @XmlElement(name = "lapRecord")
-    public String getLapRecord() {
-        return lapRecord;
+    @XmlElement(name = "laprecord")
+    public String getLaprecord() {
+        return laprecord;
     }
 
-    public void setLapRecord(String lapRecord) {
-        this.lapRecord = lapRecord;
+    public void setLaprecord(String laprecord) {
+        this.laprecord = laprecord;
     }
 
-    @XmlElement(name = "recordOwner")
-    public String getRecordOwner() {
-        return recordOwner;
+    @XmlElement(name = "recordowner")
+    public String getRecordowner() {
+        return recordowner;
     }
 
-    public void setRecordOwner(String recordOwner) {
-            this.recordOwner = recordOwner;
+    public void setRecordowner(String recordowner) {
+            this.recordowner = recordowner;
     }
 
-    @XmlElement(name = "recordYear")
-    public String getRecordYear() {
-        return recordYear;
+    @XmlElement(name = "recordyear")
+    public String getRecordyear() {
+        return recordyear;
     }
 
-    public void setRecordYear(String recordYear) {
-        this.recordYear = recordYear;
+    public void setRecordyear(String recordyear) {
+        this.recordyear = recordyear;
     }
 
     @XmlElement(name = "turns")
@@ -149,12 +153,12 @@ public class calendar {
         this.turns = turns;
     }
 
-    @XmlElement(name = "drs")
-    public int getDrs() {
-        return drs;
+    @XmlElement(name = "drszones")
+    public int getDrszones() {
+        return drszones;
     }
 
-    public void setDrs(int drs) {
-        this.drs = drs;
+    public void setDrszones(int drszones) {
+        this.drszones = drszones;
     }
 }
