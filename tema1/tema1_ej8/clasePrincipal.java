@@ -12,8 +12,8 @@ public class clasePrincipal {
         try {
             context = JAXBContext.newInstance(calendar.class);
             Unmarshaller jaxbUnmarshaller = context.createUnmarshaller();
-            calendar cl = (calendar) jaxbUnmarshaller.unmarshal(fichero.toFile());
-            System.out.println("Nombre: "+cl.getCircuitName());
+            arrayListCalendario cl = (arrayListCalendario) jaxbUnmarshaller.unmarshal(fichero.toFile());
+
 
         }catch(JAXBException e) {
             e.printStackTrace();
