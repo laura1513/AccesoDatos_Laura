@@ -1,6 +1,10 @@
 import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 
 @XmlAccessorType (XmlAccessType.FIELD)
 @XmlRootElement (name = "race")
@@ -16,7 +20,8 @@ public class circuito {
     @XmlElement(name = "gpname")
     private String gpname;
     @XmlElement(name = "racedate")
-    private Date racedate;
+    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
+    private LocalDate racedate;
     @XmlElement(name = "firstgp")
     private String firstgp;
     @XmlElement(name = "numberoflaps")
@@ -84,11 +89,11 @@ public class circuito {
     }
 
 
-    public Date getRacedate() {
+    public LocalDate getRacedate() {
         return racedate;
     }
 
-    public void setRacedate(Date racedate) {
+    public void setRacedate(LocalDate racedate) {
         this.racedate = racedate;
     }
 
@@ -170,5 +175,9 @@ public class circuito {
 
     public void setDrszones(int drszones) {
         this.drszones = drszones;
+    }
+    public String toString() {
+        return "Round: " + round +", Country: "+country+", City: "+city+", Circuit Name: "+circuitname+", GP Name: "+gpname+", Race Date: "+racedate.format(DateTimeFormatter.ofPattern("dd MMM yyyy", new Locale("es", "ES")))+", First GP: "+firstgp+", Number of Laps: "+numberoflaps
+                +", Circuit Length: "+circuitlength+", Race distance: "+racedistance+", Lap Record: "+laprecord+", Record Owner: "+recordowner+", Record Year: "+recordyear+", Turns: "+turns+", DRS Zones: "+drszones;
     }
 }

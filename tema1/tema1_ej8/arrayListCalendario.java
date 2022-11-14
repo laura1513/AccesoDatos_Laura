@@ -5,10 +5,8 @@ import java.util.ArrayList;
 
 @XmlRootElement( name = "calendar")
 public class arrayListCalendario {
-    private ArrayList<circuito> cls = new ArrayList<>();
-    public arrayListCalendario() {
+    private ArrayList<circuito> cls = null;
 
-    }
     @XmlElement (name = "race")
     public ArrayList<circuito> getCls() {
         return cls;

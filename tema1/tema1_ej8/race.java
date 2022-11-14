@@ -3,7 +3,7 @@ import java.util.List;
 
 public class race {
     private List<principal> race = new ArrayList();
-    private circuito track;
+    private String track;
     private String position;
     private int no;
     private String driver;
@@ -15,7 +15,7 @@ public class race {
     private String extraPoints;
     private String fastestLap;
 
-    public race(circuito track, String position, int no, String driver, String team, int startingGrid, int laps, String time, double points, String extraPoints, String fastestLap) {
+    public race(String track, String position, int no, String driver, String team, int startingGrid, int laps, String time, double points, String extraPoints, String fastestLap) {
         this.track = track;
         this.position = position;
         this.no = no;
@@ -96,11 +96,11 @@ public class race {
         this.position = position;
     }
 
-    public circuito getTrack() {
+    public String getTrack() {
         return track;
     }
 
-    public void setTrack(circuito track) {
+    public void setTrack(String track) {
         this.track = track;
     }
 
