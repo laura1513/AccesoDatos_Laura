@@ -17,10 +17,12 @@
       <sourceFolder url="file://$MODULE_DIR$/tema1/tema1_ej7" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tema1/tema1_ej8" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tema1/tema1_ej9" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tema2/tema2_ej1" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jakarta.xml.bind.api" level="project" />
     <orderEntry type="library" name="sun.xml.bind.jaxb.impl" level="project" />
+    <orderEntry type="library" name="xerial.sqlite.jdbc" level="project" />
   </component>
 </module>
