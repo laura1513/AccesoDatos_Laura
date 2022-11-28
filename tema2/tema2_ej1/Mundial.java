@@ -1,11 +1,17 @@
 import java.nio.file.Path;
 import java.sql.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Mundial {
     public static void main(String[] args) {
+        Scanner read = new Scanner(System.in);
         Connection conexion = null;
         PreparedStatement sentencia = null;
 
@@ -14,45 +20,100 @@ public class Mundial {
             conexion = DriverManager.getConnection("jdbc:sqlite:" + rutaBaseDatos.toString());
 
             //Clasificación final ordenada del mundial de pilotos
-            String sentenciaClasificasion = "SELECT Results.Points, Drivers.Name FROM Results INNER JOIN Drivers ON Results.DriverID = Drivers.DriverID";
+            String sentenciaClasificasion = """
+                    SELECT SUM(Results.Points) AS Points, Drivers.Name AS Driver
+                        FROM Results
+                        INNER JOIN Drivers
+                        ON Results.DriverID = Drivers.DriverID
+                        GROUP BY Drivers.Name
+                        ORDER BY Points DESC""";
 
             sentencia = conexion.prepareStatement(sentenciaClasificasion);
             ResultSet resultadosClasificacion = sentencia.executeQuery();
 
             System.out.println("Points\tDriver");
             System.out.println("----------------------------------------------");
-            HashMap<String, Double> puntos = new HashMap<>();
+
             while (resultadosClasificacion.next()) {
-                // System.out.println(rs.getInt(1) + "\t" + rs.getString(2) + "\t" + rs.getString(3) + "\t" + rs.getString(4));
-                if (!puntos.containsKey(resultadosClasificacion.getString("name"))) {
-                    puntos.put(resultadosClasificacion.getString("name"), resultadosClasificacion.getDouble("points"));
-                } else {
-                    puntos.put(resultadosClasificacion.getString("name"), puntos.get(resultadosClasificacion.getString("name"))+resultadosClasificacion.getDouble("points"));
-                }
+                System.out.println(resultadosClasificacion.getString("Driver")+"--->"+resultadosClasificacion.getDouble("Points"));
             }
-            puntos.entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue())).forEach(r -> System.out.println(r.getValue()+"  "+r.getKey()));
 
             resultadosClasificacion.close();
+            System.out.println();
 
             //Pilotos con 30 años o más (a día de hoy), ordenados de mayor a menor edad.
 
-            String sentencia30anyos = "SELECT strftime('%d/%m/%Y', Drivers.DateOfBirth) as DOB, Drivers.Name FROM Drivers";
+            String sentencia30anyos = """
+                    SELECT cast(strftime('%Y.%m%d', 'now') - strftime('%Y.%m%d', Drivers.DateOfBirth ) as int) AS DOB, Drivers.Name
+                    FROM Drivers
+                    WHERE DOB >= 30
+                    GROUP BY Drivers.Name
+                    ORDER BY DOB DESC""";
 
             sentencia = conexion.prepareStatement(sentencia30anyos);
             ResultSet resultadoMas30Anyos = sentencia.executeQuery();
 
-            System.out.println("Edad\tDriver");
+            System.out.println("Driver\tEdad");
             System.out.println("----------------------------------------------");
 
-            HashMap<String, Integer> masDe30 = new HashMap<>();
-
             while (resultadoMas30Anyos.next()) {
-
+                System.out.println(resultadoMas30Anyos.getString("name")+" "+resultadoMas30Anyos.getString("DOB"));
             }
+            resultadoMas30Anyos.close();
+            System.out.println();
 
+            /*3. Como en la consulta anterior, pero permite que sea el usuario el que especifique el límite de edad
+            mínima de los pilotos a mostrar*/
+            int num = 0;
+            System.out.print("Introduce el limite de edad: ");
+            boolean correct;
+            do {
+                try {
+                    num = read.nextInt();
+                    correct = true;
+                } catch (Exception e) {
+                    correct = false;
+                    System.out.println("Limite mal introducido");
+                }
+            } while (!correct);
+            String sentenciaEdadUsuario = """
+                    SELECT cast(strftime('%Y.%m%d', 'now') - strftime('%Y.%m%d', Drivers.DateOfBirth ) as int) AS DOB, Drivers.Name
+                    FROM Drivers
+                    WHERE DOB >= ?
+                    GROUP BY Drivers.Name
+                    ORDER BY DOB DESC""";
+
+            sentencia = conexion.prepareStatement(sentenciaEdadUsuario);
+            sentencia.setInt(1, num);
+            ResultSet resultadoEdadUsuario = sentencia.executeQuery();
+
+            System.out.println("Driver\tEdad");
+            System.out.println("----------------------------------------------");
+
+            while (resultadoEdadUsuario.next()) {
+                System.out.println(resultadoEdadUsuario.getString("name")+" "+resultadoEdadUsuario.getString("DOB"));
+            }
+            resultadoEdadUsuario.close();
+
+            String crearTabla = """
+                    CREATE TABLE IF NOT EXISTS Teams (
+                    Constructor TEXT NOT NULL PRIMARY KEY,
+                    Chassis TEXT NOT NULL,
+                    PowerUnir TEXT NOT NULL
+                    )
+                    """;
+            String insertarValores = """
+                    INSERT INTO Teams VALUES
+                    ('Alfa Romeo Racing-Ferrari', 'C38', 'Ferrari 064'),
+                    ('Ferrari','SF90','Ferrai 064'),
+                    ('Haas-Ferrari','VF-19','Ferrari 064'),
+                    ('McLaren-Renault','MCL34','Renault E-Tech 19'),
+                    ('Mercdes', 'F1 W10 EQ Power+', 'Mercedes M10 EQ Power+'),
+                    ('Racing Point-BWT Mercedes', 'RP19', 'BWT Mercedes'),                    
+                    """;
             conexion.close();
 
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
