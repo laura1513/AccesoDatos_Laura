@@ -12,12 +12,10 @@ import java.util.Scanner;
 public class Mundial {
     public static void main(String[] args) {
         Scanner read = new Scanner(System.in);
-        Connection conexion = null;
-        PreparedStatement sentencia = null;
 
-        try {
-            Path rutaBaseDatos = Path.of("tema2/tema2_ej1/formula1.db");
-            conexion = DriverManager.getConnection("jdbc:sqlite:" + rutaBaseDatos.toString());
+        Path rutaBaseDatos = Path.of("tema2/tema2_ej1/formula1.db");
+
+        try (Connection conexion = DriverManager.getConnection("jdbc:sqlite:" + rutaBaseDatos.toString())){
 
             //Clasificación final ordenada del mundial de pilotos
             String sentenciaClasificasion = """
@@ -28,7 +26,7 @@ public class Mundial {
                         GROUP BY Drivers.Name
                         ORDER BY Points DESC""";
 
-            sentencia = conexion.prepareStatement(sentenciaClasificasion);
+            PreparedStatement sentencia = conexion.prepareStatement(sentenciaClasificasion);
             ResultSet resultadosClasificacion = sentencia.executeQuery();
 
             System.out.println("Points\tDriver");
@@ -94,24 +92,43 @@ public class Mundial {
                 System.out.println(resultadoEdadUsuario.getString("name")+" "+resultadoEdadUsuario.getString("DOB"));
             }
             resultadoEdadUsuario.close();
+            sentencia.close();
 
+            //Crear tabla
             String crearTabla = """
                     CREATE TABLE IF NOT EXISTS Teams (
-                    Constructor TEXT NOT NULL PRIMARY KEY,
+                    Constructor TEXT NOT NULL,
                     Chassis TEXT NOT NULL,
-                    PowerUnir TEXT NOT NULL
-                    )
-                    """;
+                    PowerUnit TEXT NOT NULL,
+                    PRIMARY KEY (Constructor)
+                    )""";
+
+            String borrarContenido = "DELETE From Teams";
+
             String insertarValores = """
                     INSERT INTO Teams VALUES
                     ('Alfa Romeo Racing-Ferrari', 'C38', 'Ferrari 064'),
-                    ('Ferrari','SF90','Ferrai 064'),
+                    ('Ferrari','SF90','Ferrari 064'),
                     ('Haas-Ferrari','VF-19','Ferrari 064'),
                     ('McLaren-Renault','MCL34','Renault E-Tech 19'),
-                    ('Mercdes', 'F1 W10 EQ Power+', 'Mercedes M10 EQ Power+'),
-                    ('Racing Point-BWT Mercedes', 'RP19', 'BWT Mercedes'),                    
-                    """;
-            conexion.close();
+                    ('Mercedes', 'F1 W10 EQ Power+', 'Mercedes M10 EQ Power+'),
+                    ('Racing Point-BWT Mercedes', 'RP19', 'BWT Mercedes'),
+                    ('Red Bull Racing-Honda', 'RB15', 'Honda RA619H'),
+                    ('Renault', 'R.S.19', 'Renault E-Tech 19'),
+                    ('Scuderia Toro Rosso-Honda', 'STR14', 'Honda RA619H'),
+                    ('Williams-Mercedes', 'FW42', 'Mercedes M10 EQ Power+')""";
+
+            sentencia = conexion.prepareStatement(crearTabla);
+            int estado = sentencia.executeUpdate();
+            System.out.println(estado);
+            sentencia = conexion.prepareStatement(borrarContenido);
+            estado = sentencia.executeUpdate();
+            System.out.println(estado);
+            sentencia = conexion.prepareStatement(insertarValores);
+            estado = sentencia.executeUpdate();
+            System.out.println(estado);
+
+            sentencia.close();
 
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
