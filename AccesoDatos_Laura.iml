@@ -24,5 +24,6 @@
     <orderEntry type="library" name="jakarta.xml.bind.api" level="project" />
     <orderEntry type="library" name="sun.xml.bind.jaxb.impl" level="project" />
     <orderEntry type="library" name="xerial.sqlite.jdbc" level="project" />
+    <orderEntry type="library" name="mariadb.jdbc.java.client" level="project" />
   </component>
 </module>

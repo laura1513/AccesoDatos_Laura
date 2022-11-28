@@ -17,6 +17,8 @@ public class Mundial {
 
         try (Connection conexion = DriverManager.getConnection("jdbc:sqlite:" + rutaBaseDatos.toString())){
 
+            //PARTE 1
+
             //Clasificación final ordenada del mundial de pilotos
             String sentenciaClasificasion = """
                     SELECT SUM(Results.Points) AS Points, Drivers.Name AS Driver
@@ -95,7 +97,7 @@ public class Mundial {
             sentencia.close();
 
             //Crear tabla
-            String crearTabla = """
+            /*String crearTabla = """
                     CREATE TABLE IF NOT EXISTS Teams (
                     Constructor TEXT NOT NULL,
                     Chassis TEXT NOT NULL,
@@ -126,13 +128,63 @@ public class Mundial {
             System.out.println(estado);
             sentencia = conexion.prepareStatement(insertarValores);
             estado = sentencia.executeUpdate();
-            System.out.println(estado);
-
+            System.out.println(estado);*/
             sentencia.close();
 
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
+        }
+        //PARTE 2
+
+        String host ="f12019.ci66saah1axn.us-east-1.rds.amazonaws.com:3306";
+        String bbdd = "f1_2019";
+
+        String dbUrl = "jdbc:mariadb://" + host + "/" + bbdd;
+        String usuario = "admin";
+        String passwd = "aadd1234";
+
+        try (Connection conexion = DriverManager.getConnection(dbUrl, usuario, passwd)){
+            String sentenciaClasificasion = """
+                    SELECT SUM(Results.Points) AS Points, Drivers.Name AS Driver
+                        FROM Results
+                        INNER JOIN Drivers
+                        ON Results.DriverID = Drivers.DriverID
+                        GROUP BY Drivers.Name
+                        ORDER BY Points DESC""";
+
+            PreparedStatement sentencia = conexion.prepareStatement(sentenciaClasificasion);
+            ResultSet resultadosClasificacion = sentencia.executeQuery();
+
+            System.out.println("Points\tDriver");
+            System.out.println("----------------------------------------------");
+
+            while (resultadosClasificacion.next()) {
+                System.out.println(resultadosClasificacion.getString("Driver")+"--->"+resultadosClasificacion.getDouble("Points"));
+            }
+
+            resultadosClasificacion.close();
+            System.out.println();
+            String sentencia30anyos = """
+                    SELECT cast(strftime('%Y.%m%d', 'now') - strftime('%Y.%m%d', Drivers.DateOfBirth ) as int) AS DOB, Drivers.Name
+                    FROM Drivers
+                    WHERE DOB >= 30
+                    GROUP BY Drivers.Name
+                    ORDER BY DOB DESC""";
+
+            sentencia = conexion.prepareStatement(sentencia30anyos);
+            ResultSet resultadoMas30Anyos = sentencia.executeQuery();
+
+            System.out.println("Driver\tEdad");
+            System.out.println("----------------------------------------------");
+
+            while (resultadoMas30Anyos.next()) {
+                System.out.println(resultadoMas30Anyos.getString("name")+" "+resultadoMas30Anyos.getString("DOB"));
+            }
+            resultadoMas30Anyos.close();
+
+        } catch (Exception ex) {
+
         }
     }
 }
